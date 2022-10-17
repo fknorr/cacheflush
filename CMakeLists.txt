@@ -13,3 +13,4 @@ else()
 endif()
 
 add_library(cacheflush cacheflush.h ${ARCH_C})
+target_include_directories(cacheflush INTERFACE .)
