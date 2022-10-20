@@ -6,11 +6,11 @@
 
 #define mb()	_mm_mfence()
 
-static inline void clflush_cache_range_opt(void *vaddr, unsigned long size)
+static inline void clflush_cache_range_opt(const void *vaddr, unsigned long size)
 {
 	const unsigned long clflush_size = 64; // boot_cpu_data.x86_clflush_size;
-	void *p = (void *)((unsigned long)vaddr & ~(clflush_size - 1));
-	void *vend = (char*)vaddr + size;
+	const void *p = (const void *)((unsigned long)vaddr & ~(clflush_size - 1));
+	const void *vend = (const char*)vaddr + size;
 
 	if (p >= vend)
 		return;
@@ -27,14 +27,14 @@ static inline void clflush_cache_range_opt(void *vaddr, unsigned long size)
  * CLFLUSHOPT is an unordered instruction which needs fencing with MFENCE or
  * SFENCE to avoid ordering issues.
  */
-static inline void clflush_cache_range(void *vaddr, unsigned long size)
+static inline void clflush_cache_range(const void *vaddr, unsigned long size)
 {
 	mb();
 	clflush_cache_range_opt(vaddr, size);
 	mb();
 }
 
-void flush_data_cache(void *start, void *end)
+void flush_data_cache(const void *start, const void *end)
 {
 	clflush_cache_range(start, end - start);
 }

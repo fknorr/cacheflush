@@ -46,7 +46,7 @@ static inline void flush_dcache_range(unsigned long start, unsigned long stop)
 
 }
 
-void flush_data_cache(void *start, void *end)
+void flush_data_cache(const void *start, const void *end)
 {
 	flush_dcache_range((unsigned long) start, (unsigned long) end);
 }
